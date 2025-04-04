@@ -5,10 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
     <h1>Task List</h1>
+    <form class="input-container" action="{{ url_for('home') }}" method="POST">
+        <input type="text" placeholder="Enter Task" id="input-task" name="task_name">
+        <button id="add-task">+</button>
+    </form>
+    <div class="task-container">
+        {% for item in items %}
+        <div class="task">
+            <p>{{ item.name }}</p>
+            <div class="actions">
+                <form action="{{ url_for('checked_task', task_id=item.id) }}" method="POST">
+                    <input type="checkbox" name="checked" {% if item.checked %}checked{% endif %}
+                        onchange="this.form.submit()">
+                </form>
+                <form action="{{ url_for('delete_task', task_id=item.id) }}" method="POST">
+                    <button>Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
 </body>
 
